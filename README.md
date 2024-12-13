@@ -53,7 +53,7 @@ http://localhost:5213/swagger/index.html on my local
   1/ update connection string in appSettings.json. Replace |DataDirectory| with the system file path to your web solution e.g. c:\\|full-path|\\sd-todoist\\src\\SeamlessDigital.Todo.API\\App_Data\\todoist.mdf. Repeat Step 3 above. 
   
   
- 2/  if issues persist, navigate to the App_Data folder,  find "aspnet-CustomerManager.Web.mdf", right click. go to Security tab and  give "Full control" to "Authenticated Users" 
+ 2/  if issues persist, navigate to the App_Data folder,  find "todoist.mdf", right click. go to Security tab and  give "Full control" to "Authenticated Users" 
    
   3/ If issues exist, try loading the database in SSMS (Sql Server Management Studio) and using your customer server name and credentials 
   
