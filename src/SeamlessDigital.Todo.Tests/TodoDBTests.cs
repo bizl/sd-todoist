@@ -47,7 +47,7 @@ namespace SeamlessDigital.Todo.Tests
             }
 
             var  items = _repo.Get(todo);
-            Assert.That(expected == items.Count);
+            Assert.That(expected == items.Count());
         }
 
 

@@ -3,6 +3,7 @@ using Microsoft.Data.SqlClient;
 using SeamlessDigital.Todo.Data.Interfaces;
 using SeamlessDigital.Todo.Domain;
 using System.Data;
+using System.Data.Entity;
 
 namespace SeamlessDigital.Todo.Data
 {
@@ -20,7 +21,7 @@ namespace SeamlessDigital.Todo.Data
             IEnumerable<TodoItem> data;
             using (IDbConnection conn = new SqlConnection(_connectionString))
             {
-                data = conn.Query(
+                data =   conn.Query(
                           @"SELECT t.[Id]
                                   ,t.[UserId]
                                   ,t.[Todo]
@@ -36,9 +37,11 @@ namespace SeamlessDigital.Todo.Data
                                   ,t.[LastUpdatedBy]
                                   ,t.[Deleted]
                               FROM [dbo].[Todos] t 
-	                    INNER JOIN [dbo].[Categories] c on t.Category = c.CategoryKey 
+	                    LEFT JOIN [dbo].[Categories] c on t.Category = c.CategoryKey 
                              WHERE ISNULL(Deleted,0)=0 
                               AND ( 
+		                            (Todo LIKE '%' + ISNULL(@Title,'')+'%' AND @Title is not NULL) 
+		                            OR 
 		                            (ISNULL([Priority],3) = @Priority AND @Priority is not NULL) 
 		                            OR 
 		                            (YEAR(DueDate) =  YEAR(@DueDate) AND MONTH(DueDate) =  MONTH(@DueDate) AND DAY(DueDate) =  DAY(@DueDate) AND @DueDate is not NULL) 
@@ -51,13 +54,14 @@ namespace SeamlessDigital.Todo.Data
                         UserId = row.UserId,
                         Completed = row.Completed,
                         Priority = row.Priority,
+                        Title = row.Todo,
                         Location = new Location { Latitude = row.Latitude, Longitude = row.Longitude },
                         DueDate = row.DueDate,
                         Category = row.Category  
                     }
-                      ); 
+                      ).AsQueryable(); 
             }
-            return data.ToList();
+            return   data.ToList();
         } 
 
         int IRepository<TodoItem>.Insert(TodoItem t, int createUser)

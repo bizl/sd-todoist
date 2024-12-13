@@ -4,6 +4,6 @@ namespace SeamlessDigital.Todo.Services.Interfaces
 {
     public interface ITodoService
     {
-        Task<List<TodoItem>> Fetch(TodoItem t);
+        IEnumerable<TodoItem> Fetch(TodoItem t);
     }
 }

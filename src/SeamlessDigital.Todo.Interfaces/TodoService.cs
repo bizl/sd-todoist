@@ -13,9 +13,9 @@ namespace SeamlessDigital.Todo.Services
             _repository = repo;
             _weatherService = weatherService;
         }
-        public async Task<List<TodoItem>> Fetch(TodoItem todoItem)
+        public  IEnumerable<TodoItem> Fetch(TodoItem todoItem)
         {
-            return _repository.Get(todoItem).ToList();
+            return _repository.Get(todoItem);
         }
     }
 }

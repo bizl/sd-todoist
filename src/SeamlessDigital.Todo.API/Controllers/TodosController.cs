@@ -23,7 +23,7 @@ namespace SeamlessDigital.Todo.API.Controllers
         }
 
         [HttpGet]
-        public async Task<List<TodoItem>> Get(string? title, int? priority, string? dueDate)
+        public async IAsyncEnumerable<TodoItem> Get(string? title, int? priority, string? dueDate)
         {
             var todoQry = new TodoItem { Priority = Convert.ToInt32(priority), Title = title };
 
@@ -32,9 +32,23 @@ namespace SeamlessDigital.Todo.API.Controllers
             {
                 todoQry.DueDate = d;
             }
-            return await _todoService.Fetch(todoQry);
+            var todoItems =  _todoService.Fetch(todoQry);
 
-
+            foreach (var item in todoItems)
+            {
+                yield return Weatherise(item); 
+            }
         }
+
+        private  TodoItem Weatherise(TodoItem item)
+        {
+            var weatherItem = _weatherService.Peek(item.Location).GetAwaiter().GetResult();
+            if( weatherItem!=null )
+            {
+                item.Location.Weather = weatherItem;
+            }
+            return item;
+        }
+     
     }
 }
