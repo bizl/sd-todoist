@@ -4,15 +4,14 @@ using System.ComponentModel.DataAnnotations;
 namespace SeamlessDigital.Todo.Domain
 {
     public class TodoItem
-    { 
-        [Required]
+    {  
         public int UserId { get; set; }
          
         public int Id { get;  set; }
         public bool Completed { get; set; }
 
         [Required]
-        public string Todo { get; set; }
+        public string Title { get; set; }
         public string?  Category { get; set; }
 
         [Range(1,5)] 
@@ -20,5 +19,6 @@ namespace SeamlessDigital.Todo.Domain
 
         public Location? Location { get; set; }
         public DateTime? DueDate { get; set; }
+         
     }
 }

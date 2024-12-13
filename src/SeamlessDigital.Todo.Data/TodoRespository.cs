@@ -6,11 +6,11 @@ using System.Data;
 
 namespace SeamlessDigital.Todo.Data
 {
-    public class TodoDbContext : IRepository<TodoItem>
+    public class TodoRepository : IRepository<TodoItem>
     {
         string _connectionString;
 
-        public TodoDbContext(string connectionString)
+        public TodoRepository(string connectionString)
         {
             _connectionString = connectionString;
         }
@@ -71,7 +71,7 @@ namespace SeamlessDigital.Todo.Data
                                  [Priority] ,[Latitude],[Longitude]
                                 ,[DueDate],[Category],[CreatedBy]) 
                         VALUES ( @UserId, @Todo, @Completed, @Priority,@Latitude,@Longitude,@DueDate,@Category,@CreatedBy  )",
-                      new {  UserId=t.UserId,Todo= t.Todo , Completed=t.Completed,
+                      new {  UserId=t.UserId,Todo= t.Title , Completed=t.Completed,
                              Priority=t.Priority,Latitude=t.Location?.Latitude, Longitude=t.Location?.Longitude,
                              DueDate=t.DueDate,Category=t.Category, CreatedBy= createUser}
                       );

@@ -14,20 +14,20 @@ namespace SeamlessDigital.Todo.Tests
         [SetUp]
         public void SetUp()
         {
-            _repo = new TodoDbContext("Server=(localdb)\\mssqllocaldb;Database=Todoist;Trusted_Connection=True;MultipleActiveResultSets=true"); 
+            _repo = new TodoRepository("Server=(localdb)\\mssqllocaldb;Database=Todoist;Trusted_Connection=True;MultipleActiveResultSets=true"); 
         }
 
         [Test]
         public void CanInsertTodoItem()
         {
-            int affected = _repo.Insert(new TodoItem { UserId = 11, Todo = "Do dishes" }, 99);
+            int affected = _repo.Insert(new TodoItem { UserId = 11, Title = "Do dishes" }, 99);
             Assert.That(1 == affected);
         }
 
         [Test]
         public void CanUpdateTodoItem()
         {
-            int affected = _repo.Insert(new TodoItem { UserId = 11, Todo = "Do dishes" }, 99);
+            int affected = _repo.Insert(new TodoItem { UserId = 11, Title = "Do dishes" }, 99);
             Assert.That(1 == affected);
         }
 

@@ -1,23 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SeamlessDigital.Todo.Data\SeamlessDigital.Todo.Data.csproj" />
     <ProjectReference Include="..\SeamlessDigital.Todo.Domain\SeamlessDigital.Todo.Domain.csproj" />
-    <ProjectReference Include="..\SeamlessDigital.Todo.Interfaces\SeamlessDigital.Todo.Services.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="App_Data\" />
   </ItemGroup>
 
 </Project>
