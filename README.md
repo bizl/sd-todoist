@@ -50,12 +50,12 @@ http://localhost:5213/swagger/index.html on my local
 #### Potential issue
   If any issues with database connection
   
-  1/ update connection string in appSettings.json. Replace |DataDirectory| with the system file path to your web solution e.g. c:\\|full-path|\\sd-todoist\\src\\SeamlessDigital.Todo.API\\App_Data\\tdoist.mdf. Repeat Step 3 above. 
+  1/ update connection string in appSettings.json. Replace |DataDirectory| with the system file path to your web solution e.g. c:\\|full-path|\\sd-todoist\\src\\SeamlessDigital.Todo.API\\App_Data\\todoist.mdf. Repeat Step 3 above. 
   
   
  2/  if issues persist, navigate to the App_Data folder,  find "aspnet-CustomerManager.Web.mdf", right click. go to Security tab and  give "Full control" to "Authenticated Users" 
    
-  3/ If issues exist, try loading the database in MSSQL and using your customer server name and credentials 
+  3/ If issues exist, try loading the database in SSMS (Sql Server Management Studio) and using your customer server name and credentials 
   
   
 
@@ -64,25 +64,40 @@ http://localhost:5213/swagger/index.html on my local
 All db rules and relationships apply 
 
 
- Create a simple To-Do backend with APIs, using a local SQL database. - - - - 
+Create a simple To-Do backend with APIs, using a local SQL database. - - - - 
 Fetch the To-Do list from https://dummyjson.com/todos and store it.  [DONE] 
 Stored To-Do items along with the following additional fields: 
+
 o Category (optional, relation to category list) [DONE - referential integrity applied] 
+
 o Priority (1 to 5; 1 means top priority, 5 means low priority, default is 3) [DONE - defaulted  in DB] 
+
 o Location (optional, latitude & longitude) [DONE - decimal columns used joined together in API ] 
+
 o Due date (optional, Datetime) [DONE] 
+
 
 Default storage of Category List:  [DONE - Created in DB]  
 o Title (String) 
+
 o Parent category (option, key) 
 
 
+
+
+
 Client needs a new REST API which will: 
+
 o Support CRUD operations for a To-Do item. [DONE - Rough and ready with Dapper]  
+
 o Combine current weather information and a To-Do item if the Location is set. [DONE  -returned under $.Location node ] 
+
 § Weather data can be obtained from: https://www.weatherapi.com/ 
+
 § Return only the current temperature and current condition in text (e.g. Sunny, Partly 
 Cloudy, etc.) [DONE] 
+
+
 
 
 
@@ -99,6 +114,8 @@ Q4 No garbage collection. Setting values to nulls can help.
 Q5 CTEs I prefer for one off queries. They are compiled and can be fast if TSQL is well written. Temporary tables are not at all 'temporary'; can be used beyond the scope of a single query. But are good for larget datasets where indexing maybe needed or more complex transformations.
 
 Q6  Preferrably simplify and keep predicate logic within LINQ-to-entities. This may be less resource hungry and easier for LINQ to translate. I'd find balance between filtering in SQL vs in-memory 
+
+
 var books = dbContext.Books
     .Where(p => p.Title.StartsWith("A") && p.Title.EndsWith("Z"))
     .ToList(); 
@@ -108,9 +125,9 @@ var books = dbContext.Books
 
 
 ## PART  3 
-I would typically log global exceptions in middleware (Global asax etc, Api/Controller Exceptions, in the service layers 
+I would typically log global exceptions in middleware Global asax etc, Api/Controller Exceptions, in the service layers 
 
-Its important to create a pattern with standard domain objects. As with older Microsoft apps logging to a central queryable table still works. Standard proprietary error codes may also help 
+It is important to create a pattern with standard domain objects. As with older Microsoft apps logging to a central queryable table still works. Standard proprietary error codes may also help 
 
 It is good to capture useful context for troubleshooting typically from the stack trace 
 
