@@ -86,6 +86,7 @@ namespace SeamlessDigital.Todo.API.Controllers
 
 
         [HttpPost]
+        [Route("{id}")]
         public async Task<IActionResult> UpdateTodoItem([FromBody] TodoItem todoItem)
         {
             if (string.IsNullOrEmpty(todoItem.Title))
