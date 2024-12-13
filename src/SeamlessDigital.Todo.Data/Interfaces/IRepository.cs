@@ -3,7 +3,7 @@
     public interface IRepository<T> where T : class
     {
         public List<T> Get(T t);
-        public int Insert(T t, Guid createUser);
-        public int Update(T t, Guid updateUser);
+        public int Insert(T t, int createUser);
+        public int Update(T t, int updateUser); 
     }
 }

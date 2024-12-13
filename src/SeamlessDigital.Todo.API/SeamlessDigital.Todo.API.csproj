@@ -14,4 +14,9 @@
     <ProjectReference Include="..\SeamlessDigital.Todo.Domain\SeamlessDigital.Todo.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
 </Project>
