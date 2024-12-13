@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using SeamlessDigital.Todo.Data;
 using SeamlessDigital.Todo.Data.Interfaces;
 using SeamlessDigital.Todo.Domain;
@@ -18,8 +19,9 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 var weatherServiceUrl = builder.Configuration.GetValue<string>("WeatherServiceSettings:WeatherServiceUrl");
 var apiKey = builder.Configuration.GetValue<string>("WeatherServiceSettings:apiKey");
 builder.Services.AddScoped<IRepository<TodoItem>, TodoRepository>(x => new TodoRepository(connectionString));
+builder.Services.AddScoped<IRepository<Category>, CategoryRepository>(x => new CategoryRepository(connectionString));
 builder.Services.AddScoped<IWeatherService, WeatherService>(x => new WeatherService(weatherServiceUrl, apiKey));
-builder.Services.AddScoped<ITodoService, TodoService>(x => new TodoService(new TodoRepository(connectionString), new WeatherService(weatherServiceUrl, apiKey)));
+builder.Services.AddScoped<ITodoService, TodoService>(x => new TodoService(new TodoRepository(connectionString), new WeatherService(weatherServiceUrl, apiKey), new CategoryRepository(connectionString)));
 
 
 var app = builder.Build();

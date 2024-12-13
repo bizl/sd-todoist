@@ -64,36 +64,51 @@ namespace SeamlessDigital.Todo.Data
             return   data.ToList();
         } 
 
-        int IRepository<TodoItem>.Insert(TodoItem t, int createUser)
-        {
+       public  async Task<int> Insert(TodoItem t, int createUser)
+        { 
+
             int affectedRows = 0;
             using (IDbConnection conn = new SqlConnection(_connectionString))
             {
                 //TODO: Move into stored proc to validate Category via Category keys 
-                affectedRows = conn.Execute(
-       @"INSERT INTO [dbo].[Todos] ( [UserId] ,[Todo] ,[Completed],
-                                 [Priority] ,[Latitude],[Longitude]
-                                ,[DueDate],[Category],[CreatedBy]) 
-                        VALUES ( @UserId, @Todo, @Completed, @Priority,@Latitude,@Longitude,@DueDate,@Category,@CreatedBy  )",
-                      new {  UserId=t.UserId,Todo= t.Title , Completed=t.Completed,
-                             Priority=t.Priority,Latitude=t.Location?.Latitude, Longitude=t.Location?.Longitude,
-                             DueDate=t.DueDate,Category=t.Category, CreatedBy= createUser}
+                affectedRows = await  conn.ExecuteAsync(
+                   @"INSERT INTO [dbo].[Todos] ( [UserId] ,[Todo] ,[Completed],
+                                             [Priority] ,[Latitude],[Longitude]
+                                            ,[DueDate],[Category],[CreatedBy]) 
+                                    VALUES ( @UserId, @Todo, @Completed, @Priority,@Latitude,@Longitude,@DueDate,@Category,@CreatedBy  )",
+                                  new {  UserId=t.UserId,Todo= t.Title , Completed=t.Completed,
+                                         Priority=t.Priority,Latitude=t.Location?.Latitude, Longitude=t.Location?.Longitude,
+                                         DueDate=t.DueDate,Category=t.Category, CreatedBy= createUser}
+                                  );
+            }
+            return affectedRows;
+        }
+
+        public async Task<int> Update(TodoItem t, int updateUser)
+        { //TODO - delete flag to be set
+            int affectedRows = 0;
+            using (IDbConnection conn = new SqlConnection(_connectionString))
+            {
+                affectedRows = await conn.ExecuteAsync(
+                       "update [dbo].[Todos]  set Priority=@Priority, DueDate=@DueDate WHERE Id = @Id",
+                      new { Priority = t.Priority, DueDate = t.DueDate, LastUpdateDate = DateTime.Now, LastUpdatedBy = updateUser, Id = t.Id }
                       );
             }
             return affectedRows;
         }
 
-        int IRepository<TodoItem>.Update(TodoItem t, int updateUser)
-        {     //TODO - delete flag to be set
+        public async Task<int> Delete(int id, int deleteUser)
+        {
             int affectedRows = 0;
             using (IDbConnection conn = new SqlConnection(_connectionString))
             {
-                affectedRows = conn.Execute(
-                       "update [dbo].[Todos]  set Priority=@Priority, DueDate=@DueDate WHERE Id = @Id",
-                      new { Priority=t.Priority, DueDate=t.DueDate, LastUpdateDate=DateTime.Now, LastUpdatedBy=updateUser, Id= t.Id }
+                affectedRows = await conn.ExecuteAsync(
+                       "update [dbo].[Todos]  set Deleted=1, LastUpdateDate=getdate(), LastUpdatedBy= @UpdateUser WHERE Id = @Id",
+                      new {  Id = id , DeleteeUser=deleteUser}
                       );
             }
             return affectedRows;
         }
+
     }
 }

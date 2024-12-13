@@ -2,7 +2,8 @@
 {
     public class Category
     {
-        public string Title { get; set; }
-        internal Guid Parent { get; set; }
+        public Guid Key { get; set; }
+        public string? Title { get; set; } 
+        public Guid Parent { get; set; }
     }
 }
